@@ -1,0 +1,172 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="products-header">
+		<header id="main-header">
+
+          <nav class="navbar navbar-default navbar-fixed-top">
+
+            <div class="container">
+
+			<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+                <a class="navbar-brand  " href="#">
+                	<img src="img/Logo-main.png">
+                </a>
+              </div>
+			<div class=" collapse navbar-collapse" id="myNavbar">
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class=" ">
+						<a href="">
+							Home
+						</a>
+					</li>
+				<li class=" active ">
+						<a href="">
+							Product
+						</a>
+					</li>
+					<li class=" ">
+						<a href="">
+							Blog
+						</a>
+					</li>
+					<li class=" ">
+						<a href="">
+							Contact
+						</a>
+					</li>
+					<li class=" ">
+						<a href="">
+							About
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+		</header>
+		<div class="wrapper header-description">
+			<div class="container-fluid">
+			<div class="row text-center">
+		<div class="upper-text container">
+				Products By TinkerStore
+			</div>
+		<div class="lower-text container">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br>Phasellus viverra ligula a elit aliquam.
+		</div>
+
+		<div class="p-icon">
+				<i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+			</div>
+			</div>
+		</div>
+		</div>
+
+	</section>
+<section class="products-main">
+	<div class="container-fluid">
+		<div class="row ">
+		<div class="section-left col-xs-6 col-sm-4 col-md-3">
+			<div class="checkbox-menu col-xs-12 col-md-10">
+				<div class="heading">
+					Categories
+				</div>
+				<div class="sub-heading ">
+					Ideal For:
+				<div class="checkboxes ideal">
+                {% for c in categories %}
+				<div class="md-checkbox ">
+                            <input type="checkbox" id="someDynamicId" class="Checkbox" value="{{ c.name }}">{{ c.name }}
+                            <label for="someid"{% if category.slug == c.slug %}class="selected"{% endif %}>
+                        </label>
+				</div>
+                {% endfor %}
+				</div>
+
+				<div class="sub-heading">
+					Type :
+                {% for a in subcategories %}
+				<div class="checkboxes types">
+                        <input type="checkbox" id="i{{ subcategory.id }}" class="Checkbox" value="{{ a.title }}">{{ a.title }}
+                        <label for="i{{ subcategory.id }}"{% if subcategory.slug == a.slug %}class="selected"{% endif %}>
+                    </label>
+				</div>
+                {% endfor %}
+				</div>
+
+				<div class="sub-heading">
+					Assign To :
+				<div class="checkboxes assign">
+                {% for k in alignto %}
+				<div class="md-checkbox ">
+
+                        <label for=""{% if align.slug == k.slug %}class="selected"{% endif %}>
+                            <input type="checkbox" class="Checkbox" value="{{ k.name }}">{{ k.name }}
+                        </label>
+
+				</div>
+                 {% endfor %}
+				</div>
+			</div>
+		</div>
+	<!-- PRODUCT DIVISION -->
+
+		<div class="section-right col-xs-6 col-sm-8 col-md-9">
+
+			<div class="main-product col-xs-12 col-sm-5 col-md-3">
+             {% for product in products %}
+				<div class="product-img col-xs-12 ">
+					 <a href="{{ product.get_absolute_url }}">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                     </a>
+                </div>
+					<div class=" product-description col-xs-12	">
+                        <br>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+                           {% comment %} category:- {{ product.category }} <br>
+                            SubCategory:- {{ product.subcategory }} <br>
+                            Alignments:- {{ product.align }}{% endcomment %}
+					</div>
+             {% endfor %}
+		    </div>
+
+        </div>
+            </div>
+	<!--  -->
+</section>
+	<script src="https://code.jquery.com/jquery-3.1.0.js" >
+		$(window).scroll(function() {
+        if ($(".navbar-default").offset().top > 50) {
+            $(".navbar-fixed-top").addClass("top-nav-collapse");
+        } else {
+            $(".navbar-fixed-top").removeClass("top-nav-collapse");
+        }});
+	</script>
+    <script>
+                $( document ).ready(function(){
+                    console.log("ready");
+                });
+                var ids = [];
+                $('.Checkbox').on('click', function() {
+                    alert("hi");
+                var elements = $('.Checkbox:checked');
+                $.each(elements, function(i, element) {
+                ids.push($(element).val())
+                    console.log(ids);
+                });
+        //use ids to send data to server
+                    $('#data').text(JSON.stringify(ids));
+                });
+    </script>
+{% endblock %}
